@@ -1,0 +1,42 @@
+name: Training Pipeline
+
+on:
+  schedule:
+    - cron: "30 2 * * *"   # once a day, 02:30 UTC
+  workflow_dispatch: {}
+
+jobs:
+  run-training-pipeline:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Install Hopsworks extra (only if configured)
+        if: ${{ secrets.HOPSWORKS_API_KEY != '' }}
+        run: pip install -r requirements-hopsworks.txt
+
+      - name: Run training pipeline
+        working-directory: src
+        env:
+          CITY_NAME: ${{ vars.CITY_NAME }}
+          LATITUDE: ${{ vars.LATITUDE }}
+          LONGITUDE: ${{ vars.LONGITUDE }}
+          HOPSWORKS_API_KEY: ${{ secrets.HOPSWORKS_API_KEY }}
+          HOPSWORKS_PROJECT: ${{ vars.HOPSWORKS_PROJECT }}
+        run: python training_pipeline.py
+
+      - name: Commit updated local model (fallback mode only)
+        if: ${{ env.HOPSWORKS_API_KEY == '' }}
+        run: |
+          git config user.name "aqi-bot"
+          git config user.email "aqi-bot@users.noreply.github.com"
+          git add models/
+          git diff --cached --quiet || git commit -m "chore: retrain AQI model [skip ci]"
+          git push

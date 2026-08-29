@@ -1,0 +1,17 @@
+requests>=2.31
+pandas>=2.0
+numpy>=1.24
+scikit-learn>=1.3
+joblib>=1.3
+pyarrow>=14.0
+streamlit>=1.32
+plotly>=5.18
+shap>=0.44
+
+# hopsworks is intentionally NOT installed by default -- see
+# requirements-hopsworks.txt. Without it, store.py automatically uses the
+# local parquet/joblib fallback, so everything here works standalone.
+
+# Optional -- enables the dense-NN candidate in training_pipeline.py.
+# tensorflow>=2.15
+# scikeras>=0.13

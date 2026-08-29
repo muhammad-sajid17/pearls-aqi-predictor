@@ -1,0 +1,45 @@
+name: Feature Pipeline
+
+on:
+  schedule:
+    - cron: "5 * * * *"   # every hour, 5 minutes past the hour
+  workflow_dispatch: {}     # allow manual runs from the Actions tab
+
+jobs:
+  run-feature-pipeline:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Install Hopsworks extra (only if configured)
+        if: ${{ secrets.HOPSWORKS_API_KEY != '' }}
+        run: pip install -r requirements-hopsworks.txt
+
+      - name: Run feature pipeline
+        working-directory: src
+        env:
+          CITY_NAME: ${{ vars.CITY_NAME }}
+          LATITUDE: ${{ vars.LATITUDE }}
+          LONGITUDE: ${{ vars.LONGITUDE }}
+          HOPSWORKS_API_KEY: ${{ secrets.HOPSWORKS_API_KEY }}
+          HOPSWORKS_PROJECT: ${{ vars.HOPSWORKS_PROJECT }}
+        run: python feature_pipeline.py
+
+      # Only needed if you're using the local-parquet fallback instead of
+      # Hopsworks: commit the updated feature file back to the repo so the
+      # next run (and the deployed app) can see it.
+      - name: Commit updated local features (fallback mode only)
+        if: ${{ env.HOPSWORKS_API_KEY == '' }}
+        run: |
+          git config user.name "aqi-bot"
+          git config user.email "aqi-bot@users.noreply.github.com"
+          git add data/features.parquet
+          git diff --cached --quiet || git commit -m "chore: update AQI features [skip ci]"
+          git push

@@ -1,0 +1,10 @@
+# Real feature store / model registry backend (Hopsworks free tier).
+# Only install this if you've set HOPSWORKS_API_KEY and want to use it
+# instead of the local-file fallback.
+#
+# On Windows, hopsworks pulls in pyjks -> twofish, which needs a C compiler.
+# Easiest fix: install "Microsoft C++ Build Tools" (Desktop development with
+# C++ workload) from https://visualstudio.microsoft.com/visual-cpp-build-tools/
+# then re-run this install. Or just skip this file entirely -- the project
+# runs fully without it.
+hopsworks>=3.7
