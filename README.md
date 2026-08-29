@@ -1,7 +1,6 @@
 # 🌫️ Pearls AQI Predictor
 
-**An end-to-end, 100% serverless system that predicts the Air Quality Index (AQI) for a city 1, 2, and 3 days into the future** — built as a submission for the Pearls AQI Predictor project brief.
-
+**An end-to-end, 100% serverless system that predicts the Air Quality Index (AQI) for a city 1, 2, and 3 days into the future**
 The system automatically fetches live weather + pollution data every hour, engineers features, retrains its ML models every day, and serves live forecasts on an interactive dashboard — with zero servers to manage and zero cost to run.
 
 ---
