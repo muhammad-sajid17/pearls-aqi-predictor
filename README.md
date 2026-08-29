@@ -164,7 +164,7 @@ aqi-predictor/
 ### Installation
 
 ```bash
-git clone <your-repo-url>
+git clone https://github.com/muhammad-sajid17/pearls-aqi-predictor.git
 cd aqi-predictor
 uv venv
 ```
