@@ -337,6 +337,3 @@ Plots are saved to `reports/*.png` — use these directly in your written report
 
 Muhammad Sajid — Full Stack AI Developer & Data Analyst
 
-## License
-
-This project was built as a submission for the Pearls AQI Predictor assignment. Feel free to fork and adapt for your own learning.
