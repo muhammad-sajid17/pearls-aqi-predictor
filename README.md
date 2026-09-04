@@ -75,9 +75,9 @@ The system follows the brief's 4-stage serverless design exactly:
 
 ---
 
-## Requirements Checklist (mapped to the brief)
+## Requirements Checklist
 
-| Brief requirement | Status | Where it's implemented |
+| Requirement | Status | Where it's implemented |
 |---|:---:|---|
 | Fetch raw weather + pollutant data from an external API | ✅ | `src/data_source.py` — uses [Open-Meteo](https://open-meteo.com) (free, keyless) instead of AQICN/OpenWeather, which both require signup |
 | Compute features (model inputs) + targets (model outputs) | ✅ | `src/feature_engineering.py` |
